@@ -45,12 +45,15 @@ sudo pacman -Rns --noconfirm --needed pulseaudio pulseaudio-alsa || true
 sudo pacman -S --noconfirm --needed pipewire pipewire-pulse pipewire-alsa pipewire-jack
 
 sudo pacman -S --noconfirm --needed blueman
+sudo pacman -S --noconfirm --needed playerctl
+
 
 echo "--- Enabling systemd services for a complete setup ---"
 sudo systemctl enable NetworkManager.service
 sudo systemctl enable sddm.service
 sudo systemctl --user enable pipewire.service
 sudo systemctl --user enable pipewire-pulse.service
+sudo systemctl enable bluetooth.service
 
 echo "--- Setting Zsh as the default shell for the current user ---"
 chsh -s $(which zsh)
