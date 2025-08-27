@@ -23,3 +23,11 @@ sudo pacman -S gnome-control-center gnome-bluetooth chrome-gnome-shell gnome-twe
 ```
 
 GNOME on Wayland cannot be restarted with Alt+F2 → r; log out and log back in instead.
+
+if an issue occured and the gnome is forzen, switch to another tty
+Ctrl + Alt + F2 for tty2 ..
+
+to restart gdm 
+```bash
+sudo systemctl restart gdm
+```
