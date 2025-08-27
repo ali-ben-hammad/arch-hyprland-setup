@@ -13,8 +13,12 @@ sudo reboot
 
 
 
-external usb devices not detected 
+external usb devices not detected
 
+Fixed using: 
+```bash
+echo -1 | sudo tee /sys/module/usbcore/parameters/autosuspend
+```
 ## gnome as alternative (GDM to switch )
 ```bash
 sudo pacman -S gdm
