@@ -44,8 +44,10 @@ echo "--- Installing PipeWire audio stack ---"
 sudo pacman -Rns --noconfirm --needed pulseaudio pulseaudio-alsa || true
 sudo pacman -S --noconfirm --needed pipewire pipewire-pulse pipewire-alsa pipewire-jack
 
-sudo pacman -S --noconfirm --needed blueman
+sudo pacman -S --noconfirm --needed blueman bluez-utils
 sudo pacman -S --noconfirm --needed playerctl
+
+
 
 
 echo "--- Enabling systemd services for a complete setup ---"
