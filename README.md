@@ -9,3 +9,17 @@ chmod +x install.sh
 ./install.sh
 cp -r .config/hypr ~/.config/
 sudo reboot
+```
+
+
+
+external usb devices not detected 
+
+## gnome as alternative (GDM to switch )
+```bash
+sudo pacman -S gdm
+sudo systemctl enable --now gdm
+sudo pacman -S gnome-control-center gnome-bluetooth chrome-gnome-shell gnome-tweaks
+```
+
+GNOME on Wayland cannot be restarted with Alt+F2 → r; log out and log back in instead.
