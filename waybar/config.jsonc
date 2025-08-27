@@ -1,0 +1,146 @@
+{
+  "layer": "top",
+  "position": "top",
+  "modules-left": ["hyprland/workspaces"],
+
+  "modules-center": ["clock", "custom/weather"],
+
+  "modules-right": [
+    "pulseaudio",
+//    "custom/uptime",
+    "backlight",
+    "battery",
+    "network",
+    "cpu",
+    "bluetooth",
+    "memory",
+    //"custom/docker",
+   "custom/media",
+    "tray",
+  //  "custom/lock",
+    "custom/power"
+  ],
+
+
+  // TODO: fix player switch
+  // not yet working 
+  "custom/media": {
+    "exec": "~/.config/waybar/scripts/media-player.sh",
+    "interval": 1,
+    "format": "{}",
+    "on-click-right": "playerctld shift",
+    "on-click-middle": "playerctld unshift",
+    "escape": true,
+    "tooltip": true,
+    "tooltip-format": "Left: Play/Pause\nRight: Next player\nMiddle: Previous player"
+},
+
+
+  "mpris": {
+	"format": "DEFAULT: {player_icon} {dynamic}",
+	"format-paused": "DEFAULT: {status_icon} <i>{dynamic}</i>",
+	"player-icons": {
+		"default": "▶",
+		"mpv": "🎵"
+	},
+	"status-icons": {
+		"paused": "⏸"
+	}
+},
+
+"bluetooth": {
+  "format-on": "󰂯",
+  "format-off": "󰂲",
+  "format-disabled": "",
+  "format-connected": "󰂱 {num_connections}",
+  "tooltip-format-connected": "{device_enumerate}",
+  "tooltip-format-enumerate-connected": "{device_alias}\t{device_address}",
+  "on-click": "blueman-manager"
+},
+
+  "hyprland/workspaces": {
+    "format": "{name}: {icon}",
+    "format-icons": {
+      "active": "",
+      "default": ""
+    }
+  },
+
+  "tray": {
+    "icon-size": 16,
+    "spacing": 10
+  },
+
+  "custom/music": {
+    "format": "  {}",
+    "escape": true,
+    "interval": 5,
+    "tooltip": false,
+    "exec": "playerctl metadata --format='{{ artist }} - {{ title }}'",
+    "on-click": "playerctl play-pause",
+    "max-length": 50
+  },
+
+  "clock": {
+    "timezone": "America/Fortaleza",
+    "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
+    "format": "{:%d/%m/%Y - %H:%M:%S}",
+    "interval": 1
+  },
+
+  "network": {
+    "format-wifi": "󰤢 {bandwidthDownBits}",
+    "format-ethernet": "󰈀 {bandwidthDownBits}",
+    "format-disconnected": "󰤠 No Network",
+    "interval": 5,
+    "tooltip": false
+  },
+
+  "cpu": {
+    "interval": 1,
+    "format": "  {icon0}{icon1}{icon2}{icon3} {usage:>2}%",
+    "format-icons": ["▁", "▂", "▃", "▄", "▅", "▆", "▇", "█"]
+  },
+
+  "memory": {
+    "interval": 30,
+    "format": "  {used:0.1f}G/{total:0.1f}G"
+  },
+
+  "custom/uptime": {
+    "format": "{}",
+    "interval": 1600,
+    "exec": "sh -c '(uptime -p)'"
+  },
+
+  "pulseaudio": {
+    "format": "{icon} {volume}%",
+    "format-muted": "",
+    "format-icons": {
+      "default": ["", "", " "]
+    },
+    "on-click": "pavucontrol"
+  },
+
+  "custom/power": {
+    "tooltip": false,
+    "on-click": "wlogout &",
+    "format": "⏻"
+  },
+
+  "custom/docker": {
+    "format": "{}",
+    "return-type": "json",
+    "interval": 10,
+    "exec": "$(pwd)/scripts/docker-stats/docker-stats",
+    "tooltip": true
+  },
+
+  "custom/weather": {
+    "format": "{}",
+    "tooltip": true,
+    "interval": 1800,
+    "exec": "$(pwd)/scripts/weather-stats/weather-stats",
+    "return-type": "json"
+  }
+}
