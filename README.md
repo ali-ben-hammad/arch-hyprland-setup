@@ -46,55 +46,36 @@ If USB/BT return, proceed with the automatic fix below.
 
 Create a systemd sleep hook that runs after resume.
 
-### Option 1: Auto-detect and reset all xHCI controllers (recommended)
-
-**File**: `/etc/systemd/system-sleep/10-xhci-reset`
-**Content**:
-
+**File**: `/usr/local/bin/resume-script.sh`
 ```sh
-#!/bin/sh
-case "$1/$2" in
-  post/*)
-    for devpath in /sys/bus/pci/drivers/xhci_hcd/*; do
-      [ -e "$devpath" ] || continue
-      dev=$(basename "$devpath")
-      echo "$dev" > /sys/bus/pci/drivers/xhci_hcd/unbind
-      sleep 0.5
-      echo "$dev" > /sys/bus/pci/drivers/xhci_hcd/bind
-    done
-    ;;
-esac
+#!/bin/bash
+
+echo 0000:00:14.0 | sudo tee /sys/bus/pci/drivers/xhci_hcd/unbind
+sleep 1
+echo 0000:00:14.0 | sudo tee /sys/bus/pci/drivers/xhci_hcd/bind
+```
+```sh
+sudo chmod +x /usr/local/bin/resume-script.sh
+sudo chown root:root /usr/local/bin/resume-script.sh
 ```
 
 Then:
 
-```bash
-sudo chmod +x /etc/systemd/system-sleep/10-xhci-reset
-```
-
-### Option 2: Target a specific controller (e.g., Intel at `0000:00:14.0`)
-
-**File**: `/etc/systemd/system-sleep/10-xhci-reset`
-**Content**:
+**File**: `/etc/systemd/system/resume-script.service`
 
 ```sh
-#!/bin/sh
-case "$1/$2" in
-  post/*)
-    for dev in 0000:00:14.0 0000:00:0d.0; do
-      [ -e "/sys/bus/pci/devices/$dev" ] || continue
-      echo "$dev" > /sys/bus/pci/drivers/xhci_hcd/unbind
-      sleep 0.5
-      echo "$dev" > /sys/bus/pci/drivers/xhci_hcd/bind
-    done
-    ;;
-esac
-```
+[Unit]
+Description=Custom script after resume from sleep
+After=suspend.target hibernate.target hybrid-sleep.target
 
-Then:
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/resume-script.sh
+User=root
+RemainAfterExit=yes
 
-```bash
-sudo chmod +x /etc/systemd/system-sleep/10-xhci-reset
+[Install]
+WantedBy=suspend.target hibernate.target hybrid-sleep.target
 ```
 
 ## Verify
@@ -106,7 +87,6 @@ systemctl suspend
 ```
 
 After resume, USB devices and Bluetooth should work immediately.
-You can confirm with:
 
 ```bash
 lsusb
@@ -114,6 +94,7 @@ systemctl status bluetooth
 ```
 
 # gnome as alternative (GDM to switch )
+
 ```bash
 sudo pacman -S gdm
 sudo systemctl enable --now gdm
